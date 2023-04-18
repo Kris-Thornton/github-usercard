@@ -1,8 +1,27 @@
+import axios from 'axios';
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell', 'Kris-Thornton', 'Vippsi'];
+
+for(let i=0; i < followersArray.length; i++){
+  getGitCard(followersArray[i])
+}
+
+function getGitCard(username) {
+  axios.get(`https://api.github.com/users/${username}`)
+  .then( response => {
+    console.log(response.data)
+   document.querySelector('.cards').appendChild(gitProfile(response.data))
+ 
+  })
+  .catch( err => console.error(err))
+}
+
+
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -28,11 +47,68 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
 
+
+
+
+function gitProfile(getInfo) {
+  
+
+  const cardDiv = document.createElement('div');
+  const cardImg = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const login = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const profileLink = document.createElement('a')
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+
+  cardDiv.classList.add('card')
+  cardInfo.classList.add('card-info')
+  name.classList.add('name')
+  login.classList.add('username')
+
+  cardImg.src = getInfo.avatar_url;
+  
+  name.textContent = `Name: ${getInfo.name}`; 
+  login.textContent = `Login: ${getInfo.login}`;
+  location.textContent = `Location: ${getInfo.location}`;
+  profile.textContent = 'Profile'
+  profileLink.textContent = 'Link to profile'
+  profileLink.href = getInfo.html_url;
+  followers.textContent = `Followers: ${getInfo.followers}` ;
+  following.textContent = `Following: ${getInfo.following}` ;
+  bio.textContent = getInfo.bio;
+
+
+cardDiv.appendChild(cardImg);
+cardDiv.appendChild(cardInfo);
+cardInfo.appendChild(name);
+cardInfo.appendChild(login);
+cardInfo.appendChild(location);
+cardInfo.appendChild(profile);
+profile.appendChild(profileLink);
+cardInfo.appendChild(followers);
+cardInfo.appendChild(following);
+cardInfo.appendChild(bio);
+
+return cardDiv
+
+
+
+
+}
+ 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
+
+
+
 
     <div class="card">
       <img src={image url of user} />
@@ -49,6 +125,7 @@ const followersArray = [];
       </div>
     </div>
 */
+
 
 /*
   List of LS Instructors Github username's:
